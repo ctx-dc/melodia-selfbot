@@ -43,7 +43,6 @@ def Init():
     try:
         clear()
         print(f'''
-
 {Fore.CYAN}
                          
                                         ███╗░░░███╗███████╗██╗░░░░░░█████╗░██████╗░██╗░█████╗░
@@ -55,8 +54,8 @@ def Init():
                                                     {Fore.GREEN}Prefix: {Fore.CYAN}{prefix}
                                                     {Fore.GREEN}Lines: {Fore.CYAN}1073
                                                     {Fore.GREEN}Token: {Fore.CYAN}{token}
-                                                    {Fore.BLUE} -------
-                                                    {Fore.GREEN}Logged in as: {Fore.CYAN}{genocide.user.name}#{genocide.user.discriminator} | ID: {Fore.CYAN}{genocide.user.id}
+                                                    {Fore.BLUE}---------------------------------------------------
+                                                    {Fore.GREEN}Note: {Fore.CYAN}Have fun using Melodia\'s Selfbot!
 {Fore.RESET}
         ''')
         os.system(f'title Melodia\'s Custom Selfbot')
