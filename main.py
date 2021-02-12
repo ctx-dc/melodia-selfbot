@@ -82,12 +82,14 @@ async def help(ctx, category=None):
         embed.add_field(name="◆ help text", value="> Sends text commands.", inline=False)
         embed.add_field(name="◆ help image", value="> Sends image commands.", inline=False)
         embed.add_field(name="◆ help social", value="> Sends social commands.", inline=False)
+        embed.add_field(name="◆ help moderation", value="> Sends moderation commands.", inline=False)
         embed.set_thumbnail(url=genocide.user.avatar_url)
         await ctx.send(embed=embed)
     elif str(category).lower() == "general":
         print(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}] {Fore.RED}Used command \"help {category}\"{Fore.RESET}')
         embed = discord.Embed(title="━━━━━━━━◆ Melodia Selfbot ◆━━━━━━━━━", description="<> = mandatory\n[] = optional", color=0xff0000)
         embed.add_field(name="◆ av [@mention]", value="> Sends someone's avatar.", inline=False)
+        embed.add_field(name="◆ geoip <ip>", value="> Sends someone's avatar.", inline=False)
         embed.add_field(name="◆ whois [@mention]", value="> Sends information about a user.", inline=False)
         embed.add_field(name="◆ ping", value="> Sends the ping of the selfbot.", inline=False)
         embed.add_field(name="◆ pingweb", value="> Sends the availability of the website. (http(s) needed.)", inline=False)
@@ -99,6 +101,7 @@ async def help(ctx, category=None):
         print(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}] {Fore.RED}Used command \"help {category}\"{Fore.RESET}')
         embed = discord.Embed(title="━━━━━━━━◆ Melodia Selfbot ◆━━━━━━━━━", description="<> = mandatory\n[] = optional", color=0xff0000)
         embed.add_field(name="◆ embed <message>", value="> Displays text in an embed.", inline=False)
+        embed.add_field(name="◆ bump <channelid>", value="> Auto Bumps ur server", inline=False)
         embed.add_field(name="◆ ascii <message>", value="> Displays text in ASCII.", inline=False)
         embed.add_field(name="◆ nitro", value="> Sends an unchecked Nitro code.", inline=False)
         embed.add_field(name="◆ spam <amount> <message>", value="> Spams the message the specified amount of times.", inline=False)
@@ -122,6 +125,7 @@ async def help(ctx, category=None):
     elif str(category).lower() == "account":
         print(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}] {Fore.RED}Used command \"help {category}\"{Fore.RESET}')
         embed = discord.Embed(title="━━━━━━━━◆ Melodia Selfbot ◆━━━━━━━━━", description="<> = mandatory\n[] = optional", color=0xff0000)
+        embed.add_field(name="◆ hypesquad <hypesquad>", value="> Changes your hypesquad", inline=False)
         embed.add_field(name="◆ stream <message>", value="> Changes your status to streaming.", inline=False)
         embed.add_field(name="◆ game <message>", value="> Changes your status to gaming.", inline=False)
         embed.add_field(name="◆ listening <message>", value="> Changes your status to listening.", inline=False)
@@ -174,6 +178,74 @@ async def ascii(ctx, *, args: str = None):
         await ctx.send(f'```{text}```')
         print(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}] {Fore.RED}Used command \"ascii\"{Fore.RESET}')
 
+@genocide.command()
+async def bump(ctx, channelid): # b'\xfc'
+    await ctx.message.delete()
+    count = 0
+    while True:
+        try:
+            count += 1 
+            channel = Alucard.get_channel(int(channelid))
+            await channel.send('!d bump')           
+            print(f'{Fore.BLUE}[AUTO-BUMP] {Fore.GREEN}Bump number: {count} sent'+Fore.RESET)
+            await asyncio.sleep(7200)
+        except Exception as e:
+            print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}{e}"+Fore.RESET)
+        
+@genocide.command()
+async def clear(ctx): # b'\xfc'
+    await ctx.message.delete()
+    await ctx.send('ﾠﾠ'+'\n' * 400 + 'ﾠﾠ')
+    
+@genocide.command()(aliases=['changehypesquad'])
+async def hypesquad(ctx, house): # b'\xfc'
+    await ctx.message.delete()
+    request = requests.Session()
+    headers = {
+      'Authorization': token,
+      'Content-Type': 'application/json',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.305 Chrome/69.0.3497.128 Electron/4.0.8 Safari/537.36'
+    }    
+    if house == "bravery":
+      payload = {'house_id': 1}
+    elif house == "brilliance":
+      payload = {'house_id': 2}
+    elif house == "balance":
+      payload = {'house_id': 3}
+    elif house == "random":
+        houses = [1, 2, 3]
+        payload = {'house_id': random.choice(houses)}
+    try:
+        request.post('https://discordapp.com/api/v6/hypesquad/online', headers=headers, json=payload, timeout=10)
+    except Exception as e:
+        print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}{e}"+Fore.RESET)
+        
+@genocide.command()(aliases=['iplookup'])
+async def geoip(ctx, *, ipaddr: str = '1.3.3.7'): # b'\xfc'
+    await ctx.message.delete()
+    r = requests.get(f'http://extreme-ip-lookup.com/json/{ipaddr}')
+    geo = r.json()
+    em = discord.Embed()
+    fields = [
+        {'name': 'IP', 'value': geo['query']},
+        {'name': 'ipType', 'value': geo['ipType']},
+        {'name': 'Country', 'value': geo['country']},
+        {'name': 'City', 'value': geo['city']},
+        {'name': 'Continent', 'value': geo['continent']},
+        {'name': 'Country', 'value': geo['country']},
+        {'name': 'IPName', 'value': geo['ipName']},
+        {'name': 'ISP', 'value': geo['isp']},
+        {'name': 'Latitute', 'value': geo['lat']},
+        {'name': 'Longitude', 'value': geo['lon']},
+        {'name': 'Org', 'value': geo['org']},
+        {'name': 'Region', 'value': geo['region']},
+        {'name': 'Status', 'value': geo['status']},
+    ]
+    for field in fields:
+        if field['value']:
+            em.add_field(name=field['name'], value=field['value'], inline=True)
+    return await ctx.send(embed=em)
+    
 @genocide.command()
 async def embed(ctx, *, args: str = None):
     await ctx.message.delete()
