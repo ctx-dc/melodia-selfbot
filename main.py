@@ -197,7 +197,7 @@ async def clear(ctx): # b'\xfc'
     await ctx.message.delete()
     await ctx.send('ﾠﾠ'+'\n' * 400 + 'ﾠﾠ')
     
-@genocide.command()(aliases=['changehypesquad'])
+@genocide.command()
 async def hypesquad(ctx, house): # b'\xfc'
     await ctx.message.delete()
     request = requests.Session()
