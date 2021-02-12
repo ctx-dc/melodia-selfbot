@@ -220,7 +220,7 @@ async def hypesquad(ctx, house): # b'\xfc'
     except Exception as e:
         print(f"{Fore.RED}[ERROR]: {Fore.YELLOW}{e}"+Fore.RESET)
         
-@genocide.command()(aliases=['iplookup'])
+@genocide.command()
 async def geoip(ctx, *, ipaddr: str = '1.3.3.7'): # b'\xfc'
     await ctx.message.delete()
     r = requests.get(f'http://extreme-ip-lookup.com/json/{ipaddr}')
